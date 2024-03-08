@@ -1,0 +1,147 @@
+﻿@model IEnumerable<Applicazione1.Models.Prenotazione>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.DataInizio)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DataFine)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Acconto)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Cliente)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Camera)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Pensione)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Servizi)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.DataInizio)
+            </td>
+                <td >
+                @Html.DisplayFor(modelItem => item.DataFine) 
+            </td>
+            <td>
+                    @Html.DisplayFor(modelItem => item.Acconto) €
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Cliente.Nome)
+                    @Html.DisplayFor(modelItem => item.Cliente.Cognome)
+
+
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Camera.Tipo)
+                    @Html.DisplayFor(modelItem => item.Camera.Costo) €
+            </td>
+            <td>
+                    @Html.DisplayFor(modelItem => item.Pensione.Tipo)
+                    @Html.DisplayFor(modelItem => item.Pensione.Costo) €
+            </td>
+<td>
+                @foreach (var servizio in item.Servizi)
+                {
+                    @Html.DisplayFor(modelItem => servizio.Tipo)
+                        @Html.DisplayFor(modelItem => servizio.Costo)
+                        
+                    } €
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.IdPrenotazione">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.IdPrenotazione">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.IdPrenotazione">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+
+<button class="btn btn-outline-primary" id="getFetch">
+    Controlla Prenotazioni con pensione Completa
+</button>
+
+<table class="table table-striped d-none" id="tabella" >
+<thead>
+
+       
+        <tr>
+            <th>
+                Id Prenotazione
+            </th>
+            <th>
+                DataInizio
+            </th>
+            <th>
+                DataFine
+            </th>
+            <th>
+                Acconto
+            </th>
+            <th>
+                Pensione
+            </th>
+
+        </tr>
+    </thead>
+    <tbody id="fetchData">
+    </tbody>
+
+</table>
+
+@section Scripts {
+    <script>
+
+     function fetchData(action) {
+         fetch(action)
+             .then(response => response.json())
+             .then(data => {
+                 console.log(data);
+                 let html = '';
+                 data.forEach(prenotazione => {
+                     html += `
+                     <tr>
+                         <td>${prenotazione.idPrenotazione}</td>
+                         <td>${prenotazione.dataInizio}</td>
+                         <td>${prenotazione.dataFine}</td>
+                         <td>${prenotazione.acconto}</td>
+                         <td>${prenotazione.pensione}</td>
+                     </tr>
+                     `;
+                 });
+                 document.getElementById('fetchData').innerHTML = html;
+             })
+             .catch(error => {
+                 console.error(error);
+             });
+     }
+
+     document.getElementById('getFetch').addEventListener('click', function () {
+         fetchData('Prenotazione/PrenotazioniCompleta');
+document.getElementById('tabella').classList.remove('d-none');
+     });
+    </script>
+}
+

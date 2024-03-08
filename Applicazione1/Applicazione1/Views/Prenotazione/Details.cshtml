@@ -1,0 +1,84 @@
+﻿@using Microsoft.EntityFrameworkCore.Metadata.Internal
+@model Applicazione1.Models.Prenotazione
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Prenotazione</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.DataInizio)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.DataInizio)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.DataFine)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.DataFine)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Acconto)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Acconto) €
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Cliente)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Cliente.Nome)
+            @Html.DisplayFor(model => model.Cliente.Cognome)
+
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Camera)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Camera.Tipo)
+            @Html.DisplayFor(model => model.Camera.Costo) €
+
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Pensione)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Pensione.Tipo)
+            @Html.DisplayFor(model => model.Pensione.Costo) €
+        </dd>
+        <dt class="col-sm-2">
+           @Html.DisplayNameFor(model => model.Servizi)
+        </dt>
+        <dd class="col-sm-10">
+            @foreach (var servizio in Model.Servizi)
+            {
+                <div>
+                    @Html.DisplayFor(model => servizio.Tipo)
+                    @Html.DisplayFor(model => servizio.Costo) €
+                </div>
+            }
+        </dd>
+    </dl>
+</div>
+<br />
+<h3 class="display-3">Totale</h3>
+<hr />
+<div>
+    <h4>
+        @{
+            var totale = Model.Acconto - (Model.Camera.Costo + Model.Pensione.Costo + Model.Servizi.Sum(s => s.Costo));
+            Math.Abs(totale);
+        }
+        <span>Prezzo:</span> <strong>@totale €</strong>
+    </h4>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.IdPrenotazione">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

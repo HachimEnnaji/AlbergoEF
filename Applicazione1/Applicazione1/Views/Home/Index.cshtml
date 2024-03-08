@@ -1,0 +1,15 @@
+﻿<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <p>Cerca le tue prenotazioni</p>
+    <form asp-action="CercaCodiceFiscale" method="get">
+        <div class="form-group">
+            <input type="text" class="form-control" name="codiceFiscale" placeholder="Inserisci codice fiscale">
+        </div>
+        <button type="submit" class="btn btn-primary">Search</button>
+    </form>
+    <div id="result"></div>
+</div>
+
+
+
+
